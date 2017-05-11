@@ -1,0 +1,8 @@
+@relation yazilar
+
+@attribute virgul_sayisi numeric
+@attribute ve_baglac_sayisi numeric
+@attribute nokta_sayisi numeric
+
+@data
+44,23,52
