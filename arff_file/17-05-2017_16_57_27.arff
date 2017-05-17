@@ -1,0 +1,26 @@
+@relation yazarlar
+
+@attribute nokta numeric
+@attribute virgul numeric
+@attribute ve_baglaci numeric
+@attribute folders {ali ece, ayse arman, batuhan yasar, cengiz semercioglu, huseyin gulerce, melike karakartal, melis alphan, nil karaibrahimgil, omur gedik, oray egin, osman muftuoglu, özgür bolat, refika birgul, sahrap soysal, taha akyol, vedat milor, yalçın bayer, yavuz donat}
+
+@data
+960, 1081, 162, ali ece
+4136, 5421, 698, ayse arman
+2091, 1280, 543, batuhan yasar
+701, 2463, 298, cengiz semercioglu
+1590, 1749, 380, huseyin gulerce
+926, 2485, 421, melike karakartal
+1086, 1877, 441, melis alphan
+2090, 1989, 151, nil karaibrahimgil
+939, 1899, 398, omur gedik
+2572, 1835, 455, oray egin
+2160, 2824, 864, osman muftuoglu
+1445, 1769, 453, özgür bolat
+1775, 1789, 602, refika birgul
+1193, 1108, 403, sahrap soysal
+539, 1878, 586, taha akyol
+2571, 1776, 1044, vedat milor
+2011, 3478, 1144, yalçın bayer
+326, 151, 31, yavuz donat
