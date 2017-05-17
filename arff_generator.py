@@ -18,7 +18,11 @@ class ArffFileGenerator:
         self.folderpath = folderpath
         self.search_list = list(attribute_list.values())
 
+        self.counterList = []
         self.totalCounter = Counter()  # initiate a counter
+        self.emptyCounter()
+
+    def emptyCounter(self):
         for w in self.search_list:  # ensure all keys are exist
             self.totalCounter[w] += 0  # fill them with zero
 
@@ -33,7 +37,7 @@ class ArffFileGenerator:
             tokens = nltk.word_tokenize(data)  # populate data with tokens
 
             filteredwords = [t for t in tokens if t in self.search_list]
-            return Counter(filteredwords) # return the counter object of wanted list
+            return Counter(filteredwords)  # return the counter object of wanted list
 
     def create_arff(self):
         """
@@ -52,10 +56,11 @@ class ArffFileGenerator:
 
             output.write("\n")
             output.write("@data\n")
-            # populate data part of the file with count of each word
-            line = ','.join('{}'.format(self.totalCounter[w]) for w in self.search_list)
+            for cnt in self.counterList:
+                # populate data part of the file with count of each word
+                line = ','.join('{}'.format(cnt[w]) for w in self.search_list)
+                output.write(line + "\n")
 
-            output.write(line + "\n")
         return my_arff_file
 
     def generate(self):
@@ -63,44 +68,17 @@ class ArffFileGenerator:
         Main method of this class it walks in a directory and gets txt files to process
         :return: string name of created arff file.
         """
-        # get txt files from folder path
-        files = [f for f in os.listdir(self.folderpath) if f.endswith(".txt")]
-        for f_name in files:
-            self.totalCounter += self.count_words(f_name)  # sum'em up
+        folders = [d for d in os.listdir(self.folderpath) if os.path.isdir(d)]
+        for folder in folders:
+            # get txt files from folder path
+            files = [f for f in os.listdir(folder) if f.endswith(".txt")]
+            print(folder)
+            self.emptyCounter()
+            for f_name in files:
+                self.totalCounter += self.count_words(f_name)  # sum'em up
+
+            self.counterList.append(self.totalCounter)
 
         arff_file = self.create_arff()  # generate file
+
         return arff_file
-
-
-if __name__ == "__main__":
-    print("")
-    print("*** Weka ARFF File Generator ***")
-    print("This app only generates numeric fields and looks for value's frequency \non a given txt files.")
-    print("--------------------------------")
-    print("")
-
-    print("### RELATION ###")
-    relation = input("Enter Relation Name: ")
-    print("--------------------------------")
-    print("")
-    print("### ATTRIBUTES ###")
-    print("Enter q on Attribute name to finish entering attributes")
-    print("")
-    attribute_list = {}
-    while True:
-        attr_name = input("Enter Attribute Name: ")
-        if attr_name.strip() == 'q':
-            break
-        attr_value = input("Enter Value to Search: ")
-        attribute_list[attr_name] = attr_value.strip()
-        print("")
-    print("--------------------------------")
-    print("")
-    print("### FILES ###")
-
-    folderpath = input("Enter Folder Path for Data Files: ")
-
-    fg = ArffFileGenerator(relation, attribute_list, folderpath)
-    filename = fg.generate()
-    print("")
-    print("File generated successfully at : " + filename)
