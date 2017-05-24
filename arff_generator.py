@@ -59,8 +59,9 @@ class ArffFileGenerator:
             output.write("@data\n")
             for key, counter_value in sorted(self.counterList.items()):
                 # populate data part of the file with count of each word
+                joker_key = os.path.split(os.path.split(key)[0])[1]
                 line = ', '.join('{}'.format(counter_value[w]) for w in self.search_list)
-                line += ', ' + key
+                line += ', ' + joker_key
                 output.write(line + "\n")
 
         return my_arff_file
@@ -76,9 +77,8 @@ class ArffFileGenerator:
             files = [f.path for f in os.scandir(folder) if f.name.endswith(".txt")]
             self.empty_counter()
             for f_name in files:
-                self.totalCounter += self.count_words(f_name)  # sum'em up
-
-            self.counterList[os.path.basename(os.path.normpath(folder))] = self.totalCounter
+                self.totalCounter = self.count_words(f_name)
+                self.counterList[f_name] = self.totalCounter
 
         arff_file = self.create_arff()  # generate file
 
